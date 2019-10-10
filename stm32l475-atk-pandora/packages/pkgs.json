@@ -1,0 +1,32 @@
+[
+ {
+  "path": "/packages/iot/webclient", 
+  "ver": "v2.1.0", 
+  "name": "WEBCLIENT"
+ }, 
+ {
+  "path": "/packages/iot/cJSON", 
+  "ver": "v1.0.2", 
+  "name": "CJSON"
+ }, 
+ {
+  "path": "/packages/iot/at_device", 
+  "ver": "v2.0.0", 
+  "name": "AT_DEVICE"
+ }, 
+ {
+  "path": "/packages/multimedia/wavplayer", 
+  "ver": "v0.2.0", 
+  "name": "WAVPLAYER"
+ }, 
+ {
+  "path": "/packages/misc/optparse", 
+  "ver": "v1.0.0", 
+  "name": "OPTPARSE"
+ }, 
+ {
+  "path": "/packages/misc/FlexibleButton", 
+  "ver": "v1.0.0", 
+  "name": "FLEXIBLE_BUTTON"
+ }
+]
