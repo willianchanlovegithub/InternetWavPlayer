@@ -479,12 +479,12 @@ static char iotb_music_is_play = 0;     /* 停止/开始播放标志位 */
 static char iotb_music_is_resume = 0;   /* 暂停/恢复播放标志位 */
 static int volume_value = 55;           /* 默认音量 */
 
-extern const unsigned char gImage_fangjian[];
-extern const unsigned char gImage_gaobaiqiqiu[];
-extern const unsigned char gImage_jiandanai[];
-extern const unsigned char gImage_mingmingjiu[];
-extern const unsigned char gImage_liuruiqi[];
-extern const unsigned char gImage_erke[];
+extern const unsigned char gImage_fangjian1[];
+extern const unsigned char gImage_gaobaiqiqiu1[];
+extern const unsigned char gImage_jiandanai1[];
+extern const unsigned char gImage_mingmingjiu1[];
+extern const unsigned char gImage_xiatiandefeng1[];
+extern const unsigned char gImage_yuebanxiaoyequ1[];
 
 /* menu2 */
 static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
@@ -498,9 +498,9 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
         lcd_set_color(WHITE, BLACK);
         lcd_show_string(40, 8, 32, "Wav Player");
         lcd_set_color(WHITE, BLACK);
-        lcd_show_num(224, 224, volume_value, RT_NULL, 16);
+        lcd_show_num(216, 214, volume_value, RT_NULL, 16);
         /* 显示当前音量条 */
-        lcd_show_string(0, 224, 16, "Volume:");
+        lcd_show_string(8, 214, 16, "Volume:");
         lcd_set_color(WHITE, RED);
         for (int i = 0; i < (100 / 5 - 1); i++)
         {
@@ -508,7 +508,7 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
             {
                 lcd_set_color(WHITE, GRAY240);
             }
-            lcd_show_string(64 + 8 * i, 224, 16, "=");
+            lcd_show_string(64 + 8 * i, 214, 16, "=");
         }
     }
     
@@ -517,34 +517,34 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
         /* 专辑图片显示 */
         if (strcmp(songlist[songlist_num], "fangjian.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 150, gImage_fangjian);
+            lcd_show_image(45, 48, 150, 110, gImage_fangjian1);
         }
         else if (strcmp(songlist[songlist_num], "gaobaiqiqiu.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 150, gImage_gaobaiqiqiu);
+            lcd_show_image(45, 48, 150, 110, gImage_gaobaiqiqiu1);
         }
         else if (strcmp(songlist[songlist_num], "jiandanai.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 150, gImage_jiandanai);
+            lcd_show_image(45, 48, 150, 110, gImage_jiandanai1);
         }
         else if (strcmp(songlist[songlist_num], "mingmingjiu.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 150, gImage_mingmingjiu);
+            lcd_show_image(45, 48, 150, 110, gImage_mingmingjiu1);
         }
         else if (strcmp(songlist[songlist_num], "xiatiandefeng.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 150, gImage_liuruiqi);
+            lcd_show_image(45, 48, 150, 110, gImage_xiatiandefeng1);
         }
         else if (strcmp(songlist[songlist_num], "yuebanxiaoyequ.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 150, gImage_erke);
+            lcd_show_image(45, 48, 150, 110, gImage_yuebanxiaoyequ1);
         }
         else
         {
-            lcd_draw_rectangle(45, 48, 195, 198);
-            lcd_draw_line(45, 48, 195, 198);
-            lcd_draw_line(195, 48, 45, 198);
-            lcd_show_string(72, 111, 24, "No Album");
+            lcd_draw_rectangle(45, 48, 195, 158);
+            lcd_draw_line(45, 48, 195, 158);
+            lcd_draw_line(195, 48, 45, 158);
+            lcd_show_string(72, 91, 24, "No Album");
         }
         /* 如果缓存数据已存在本地，直接播放 */
         if (open(songlist[songlist_num], O_RDONLY) >= 0)
@@ -552,13 +552,13 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
             wavplayer_play(songlist[songlist_num]);
             iotb_music_is_play = 1;
             lcd_set_color(WHITE, BLACK);
-            lcd_show_string(((240 - strlen(songlist[songlist_num]) * 12) / 2), 199, 24, songlist[songlist_num]);
+            lcd_show_string(((240 - strlen(songlist[songlist_num]) * 12) / 2), 179, 24, songlist[songlist_num]);
         }
         /* 否则通过webclient缓存到本地再播放 */
         else
         {
             lcd_set_color(WHITE, BLACK);
-            lcd_show_string(60, 199, 24, "Caching...");
+            lcd_show_string(60, 179, 24, "Caching...");
             /* 拼接网址 */
             download_url = (char *) malloc(strlen(DOWNLOAD_URL) + strlen(songlist[songlist_num]));
             rt_kprintf("strlen(songlist[songlist_num]) = %d\n", strlen(songlist[songlist_num]));
@@ -572,7 +572,7 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
                 iotb_music_is_play = 1;
                 lcd_set_color(WHITE, BLACK);
                 lcd_show_string(0, 199, 24, "                    ");
-                lcd_show_string(((240 - strlen(songlist[songlist_num]) * 12) / 2), 199, 24, songlist[songlist_num]);
+                lcd_show_string(((240 - strlen(songlist[songlist_num]) * 12) / 2), 179, 24, songlist[songlist_num]);
             }
         }
         lcd_menu->current_event = IOTB_LCD_EVENT_NONE;
@@ -619,9 +619,9 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
             wavplayer_volume_set(volume_value);
             /* 音量条- */
             lcd_set_color(WHITE, GRAY240);
-            lcd_show_string(224 - 8 * ((100 / 5) - (volume_value / 5)), 224, 16, "=");
+            lcd_show_string(224 - 8 * ((100 / 5) - (volume_value / 5)), 214, 16, "=");
             lcd_set_color(WHITE, BLACK);
-            lcd_show_num(224, 224, volume_value, RT_NULL, 16);
+            lcd_show_num(216, 214, volume_value, RT_NULL, 16);
             rt_kprintf("volume value is:%d\n", volume_value);
         }
         lcd_menu->current_event = IOTB_LCD_EVENT_NONE;
@@ -635,9 +635,9 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
             wavplayer_volume_set(volume_value);
             /* 音量条+ */
             lcd_set_color(WHITE, RED);
-            lcd_show_string(64 + 8 * (volume_value / 5 - 1), 224, 16, "=");
+            lcd_show_string(64 + 8 * (volume_value / 5 - 1), 214, 16, "=");
             lcd_set_color(WHITE, BLACK);
-            lcd_show_num(224, 224, volume_value, RT_NULL, 16);
+            lcd_show_num(216, 214, volume_value, RT_NULL, 16);
             rt_kprintf("volume value is:%d\n", volume_value);
         }
         lcd_menu->current_event = IOTB_LCD_EVENT_NONE;
