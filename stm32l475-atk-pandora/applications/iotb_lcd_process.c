@@ -338,7 +338,8 @@ void iotb_lcd_show_httpwebserver(iotb_lcd_menu_t *lcd_menu)
     }
     
     /* 连接服务器获取数据 */
-    if (lcd_menu->current_event == IOTB_LCD_EVENT_ENTER)
+    if (lcd_menu->current_event == IOTB_LCD_EVENT_ENTER || 
+        lcd_menu->content_type == IOTB_LCD_STATIC_CONTENT)
     {
         /* 为webserver_url分配空间 */
         webserver_url = rt_calloc(1, GET_URL_LEN_MAX);
