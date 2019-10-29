@@ -338,7 +338,8 @@ void iotb_lcd_show_httpwebserver(iotb_lcd_menu_t *lcd_menu)
     }
     
     /* 连接服务器获取数据 */
-    if (lcd_menu->current_event == IOTB_LCD_EVENT_ENTER)
+    if (lcd_menu->current_event == IOTB_LCD_EVENT_ENTER || 
+        lcd_menu->content_type == IOTB_LCD_STATIC_CONTENT)
     {
         /* 为webserver_url分配空间 */
         webserver_url = rt_calloc(1, GET_URL_LEN_MAX);
@@ -479,12 +480,12 @@ static char iotb_music_is_play = 0;     /* 停止/开始播放标志位 */
 static char iotb_music_is_resume = 0;   /* 暂停/恢复播放标志位 */
 static int volume_value = 55;           /* 默认音量 */
 
-extern const unsigned char gImage_fangjian1[];
-extern const unsigned char gImage_gaobaiqiqiu1[];
-extern const unsigned char gImage_jiandanai1[];
-extern const unsigned char gImage_mingmingjiu1[];
-extern const unsigned char gImage_xiatiandefeng1[];
-extern const unsigned char gImage_yuebanxiaoyequ1[];
+extern const unsigned char gImage_fangjian2[];
+extern const unsigned char gImage_gaobaiqiqiu2[];
+extern const unsigned char gImage_jiandanai2[];
+extern const unsigned char gImage_mingmingjiu2[];
+extern const unsigned char gImage_xiatiandefeng2[];
+extern const unsigned char gImage_yuebanxiaoyequ2[];
 
 /* menu2 */
 static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
@@ -499,6 +500,7 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
         lcd_show_string(40, 8, 32, "Wav Player");
         lcd_set_color(WHITE, BLACK);
         lcd_show_num(216, 214, volume_value, RT_NULL, 16);
+        
         /* 显示当前音量条 */
         lcd_show_string(8, 214, 16, "Volume:");
         lcd_set_color(WHITE, RED);
@@ -508,43 +510,45 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
             {
                 lcd_set_color(WHITE, GRAY240);
             }
-            lcd_show_string(64 + 8 * i, 214, 16, "=");
+            lcd_show_string(64 + 8 * i, 214, 16, ">");
         }
     }
     
     if (lcd_menu->current_event == IOTB_LCD_EVENT_ENTER)
     {
+        lcd_set_color(WHITE, BLACK);
         /* 专辑图片显示 */
         if (strcmp(songlist[songlist_num], "fangjian.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 110, gImage_fangjian1);
+            lcd_show_image(41, 52, 158, 118, gImage_fangjian2);
         }
         else if (strcmp(songlist[songlist_num], "gaobaiqiqiu.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 110, gImage_gaobaiqiqiu1);
+            lcd_show_image(41, 52, 158, 118, gImage_gaobaiqiqiu2);
         }
         else if (strcmp(songlist[songlist_num], "jiandanai.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 110, gImage_jiandanai1);
+            lcd_show_image(41, 52, 158, 118, gImage_jiandanai2);
         }
         else if (strcmp(songlist[songlist_num], "mingmingjiu.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 110, gImage_mingmingjiu1);
+            lcd_show_image(41, 52, 158, 118, gImage_mingmingjiu2);
         }
         else if (strcmp(songlist[songlist_num], "xiatiandefeng.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 110, gImage_xiatiandefeng1);
+            lcd_show_image(41, 52, 158, 118, gImage_xiatiandefeng2);
         }
         else if (strcmp(songlist[songlist_num], "yuebanxiaoyequ.wav") == 0)
         {
-            lcd_show_image(45, 48, 150, 110, gImage_yuebanxiaoyequ1);
+            lcd_show_image(41, 52, 158, 118, gImage_yuebanxiaoyequ2);
         }
         else
         {
-            lcd_draw_rectangle(45, 48, 195, 158);
-            lcd_draw_line(45, 48, 195, 158);
-            lcd_draw_line(195, 48, 45, 158);
-            lcd_show_string(72, 91, 24, "No Album");
+            lcd_set_color(WHITE, GRAY240);
+            lcd_draw_rectangle(41, 52, 199, 159);
+            lcd_draw_line(41, 52, 199, 159);
+            lcd_draw_line(199, 52, 45, 159);
+            lcd_show_string(72, 99, 24, "No Album");
         }
         /* 如果缓存数据已存在本地，直接播放 */
         if (open(songlist[songlist_num], O_RDONLY) >= 0)
@@ -571,7 +575,7 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
                 wavplayer_play(songlist[songlist_num]);
                 iotb_music_is_play = 1;
                 lcd_set_color(WHITE, BLACK);
-                lcd_show_string(0, 199, 24, "                    ");
+                lcd_show_string(0, 179, 24, "                    ");
                 lcd_show_string(((240 - strlen(songlist[songlist_num]) * 12) / 2), 179, 24, songlist[songlist_num]);
             }
         }
@@ -619,7 +623,7 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
             wavplayer_volume_set(volume_value);
             /* 音量条- */
             lcd_set_color(WHITE, GRAY240);
-            lcd_show_string(224 - 8 * ((100 / 5) - (volume_value / 5)), 214, 16, "=");
+            lcd_show_string(224 - 8 * ((100 / 5) - (volume_value / 5)), 214, 16, ">");
             lcd_set_color(WHITE, BLACK);
             lcd_show_num(216, 214, volume_value, RT_NULL, 16);
             rt_kprintf("volume value is:%d\n", volume_value);
@@ -635,7 +639,7 @@ static void iotb_lcd_show_music(iotb_lcd_menu_t *lcd_menu)
             wavplayer_volume_set(volume_value);
             /* 音量条+ */
             lcd_set_color(WHITE, RED);
-            lcd_show_string(64 + 8 * (volume_value / 5 - 1), 214, 16, "=");
+            lcd_show_string(64 + 8 * (volume_value / 5 - 1), 214, 16, ">");
             lcd_set_color(WHITE, BLACK);
             lcd_show_num(216, 214, volume_value, RT_NULL, 16);
             rt_kprintf("volume value is:%d\n", volume_value);
@@ -664,6 +668,21 @@ static void iotb_lcd_show_sdcard(iotb_lcd_menu_t *lcd_menu)
         lcd_clear(WHITE);
         lcd_set_color(WHITE, BLACK);
         lcd_show_string(32, 8, 32, "File System");
+        
+        /* 之前在menu1中rt_malloc的空间用完后需要及时释放 */
+        for (int cnt = 0; cnt < item_num; cnt++)
+        {
+            if (songlist[cnt] != RT_NULL)
+            {
+                rt_free(songlist[cnt]);
+                songlist[cnt] = RT_NULL;
+            }
+        }
+        if (songlist != RT_NULL)
+        {
+            rt_free(songlist);
+            songlist = RT_NULL;
+        }
     }
 
     dirp = opendir("/");
