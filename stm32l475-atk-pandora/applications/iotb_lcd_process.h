@@ -19,9 +19,8 @@
 #define MUSIC_PATH_MAX_LEN  (128u)  /* 音乐路径最大长度 */
 #define MUSIC_PATH          "/"     /* 音乐打开目录 */
 
-#define WEBSERVER_URL       "http://wuhanstudio.online:1234/dir"    /* 服务器JSON */
-#define DOWNLOAD_URL        "http://123.207.116.104/ctw/"           /* 服务器IP地址 */
-//#define DOWNLOAD_URL        "http://wuhanstudio.online:9003/"       /* 服务器域名地址 */
+#define WEBSERVER_URL       "http://123.207.116.104:1234/dir"    /* 服务器JSON */
+#define DOWNLOAD_URL        "http://123.207.116.104:9999/"       /* 服务器域名地址 */
 #define GET_HEADER_BUFSZ    1024                                    /* 头部大小 */
 #define GET_RESP_BUFSZ      1024                                    /* 响应缓冲区大小 */
 #define GET_URL_LEN_MAX     128                                     /* 网址最大长度 */
